@@ -118,6 +118,21 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
       if (!rows.length) return;
 
       hoverLine.style("display", null).attr("x1", x(year)).attr("x2", x(year));
+
+      // highlight: model-range bar + dot on each path at this year
+      hoverMarks.style("display", null);
+      hoverMarks.selectAll(".hover-range").data(rows, d => d.scenario)
+        .join("line").attr("class", "hover-range")
+        .attr("x1", x(year)).attr("x2", x(year))
+        .attr("y1", d => y(d.low)).attr("y2", d => y(d.high))
+        .attr("stroke", d => colors[d.scenario]).attr("stroke-width", 6)
+        .attr("stroke-linecap", "round").attr("opacity", 0.35);
+      hoverMarks.selectAll(".hover-dot").data(rows, d => d.scenario)
+        .join("circle").attr("class", "hover-dot")
+        .attr("cx", x(year)).attr("cy", d => y(d.median)).attr("r", 5.5)
+        .attr("fill", d => colors[d.scenario])
+        .attr("stroke", "#fff").attr("stroke-width", 2);
+
       tooltip.style("display", "block")
         // flip to the left of the cursor near the right edge
         .style("left", (e.clientX > window.innerWidth - 370 ? e.pageX - 370 : e.pageX + 15) + "px")
@@ -131,8 +146,14 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
     })
     .on("mouseleave", () => {
       hoverLine.style("display", "none");
+      hoverMarks.style("display", "none");
       tooltip.style("display", "none");
     });
+
+  // drawn on top of the hover area, but ignores the mouse so hovering keeps working
+  const hoverMarks = svg.append("g")
+    .style("pointer-events", "none")
+    .style("display", "none");
 
   update(regions[0]);
 });
