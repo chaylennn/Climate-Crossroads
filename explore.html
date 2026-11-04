@@ -23,7 +23,7 @@
 </head>
 <body>
   <h1>Climate Crossroads: Project 3 Checkpoint</h1>
-  <p class="subtitle">DSC 106, Project 3, Group 47. <a href="index.html">Open the main visualization</a></p>
+  <p class="subtitle">DSC 106, Group 47. <a href="index.html">Open the main visualization</a></p>
 
   <!-- 1. Team -->
   <section class="block">
@@ -56,7 +56,7 @@
         IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-LR, and MRI-ESM2-0 (first ensemble member, r1i1p1f1, for each).</li>
       <li><strong>Regions:</strong> the 46 IPCC AR6 land regions.</li>
     </ul>
-    <p><strong>How we transformed it</strong> (in <code>preprocessing.ipynb</code>):</p>
+    <p><strong>Data Transformations</strong> (in <code>preprocessing.ipynb</code>):</p>
     <ul>
       <li>Converted Kelvin to °C and averaged monthly values into annual means.</li>
       <li>Averaged each region's grid cells, weighted by cos(latitude) so cells near the poles don't count too much.</li>
@@ -65,13 +65,11 @@
       <li>Combined the 7 models into a median, plus the min and max as an uncertainty range.</li>
       <li>Applied a 10-year centered rolling mean to smooth year-to-year noise.</li>
     </ul>
-    <p>The result is one small CSV (region, scenario, year, median, low, high) that D3 loads directly.</p>
   </section>
 
   <!-- 3. Exploratory graphs -->
   <section class="block">
     <h2>3. Exploratory graphs</h2>
-    <p>All graphs below are built with D3 from the same processed CSV.</p>
 
     <div class="fig">
       <h3>Graph 1. One past, four futures</h3>
