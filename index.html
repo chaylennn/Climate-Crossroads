@@ -13,15 +13,17 @@
     Lines show the median of 7 CMIP6 models, shaded bands show the model range.
     Annual means, area-weighted over IPCC AR6 land regions, 10-year smoothing.
   </p>
-
-     <p><a href="explore.html">See our exploratory graphs</a></p>
+  <p><a href="explore.html">See our checkpoint page and exploratory graphs</a></p>
 
   <label for="region-select">Region:</label>
   <select id="region-select"></select>
 
-  <div id="chart"></div>
+  <div id="scenario-toggles"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <div id="chart"></div>
+  <div id="tooltip"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
   <script src="main.js"></script>
 </body>
 </html>
