@@ -15,6 +15,22 @@
   </p>
   <p><a href="explore.html">See our checkpoint page and exploratory graphs</a></p>
 
+  <div class="intro">
+    <p>
+      Every region on Earth shares the same climate past, but its future depends on how much
+      greenhouse gas the world emits from here on. This chart shows how much warmer a region gets
+      compared to the late 1800s, before most human emissions. The gray line is what models
+      simulate for the past. At 2015 it splits into four possible futures, one for each emissions
+      scenario.
+    </p>
+    <p><strong>How to read it:</strong></p>
+    <ul>
+      <li><strong>Lines</strong> show the middle estimate (the median of 7 climate models).</li>
+      <li><strong>Shaded bands</strong> show the full range across those models. A wider band means the models disagree more.</li>
+      <li><strong>Pick a region</strong> from the dropdown, <strong>turn scenarios on or off</strong> with the buttons, and <strong>hover</strong> over the chart to see exact values for any year.</li>
+    </ul>
+  </div>
+
   <label for="region-select">Region:</label>
   <select id="region-select"></select>
 
@@ -22,6 +38,37 @@
 
   <div id="chart"></div>
   <div id="tooltip"></div>
+
+  <section class="scenarios">
+    <h2>What do the scenarios mean?</h2>
+    <p>
+      Each scenario is a "Shared Socioeconomic Pathway" (SSP), a story about how the world might
+      develop and how much it emits. The first number is the pathway (1 to 5). The second number is
+      how much extra heat the atmosphere traps by 2100, in watts per square meter. Bigger means more warming.
+    </p>
+    <div class="scenario-grid">
+      <div class="scenario-card" style="--c:#1a9850">
+        <h3>SSP1-2.6: Low emissions</h3>
+        <p>The world moves quickly toward clean energy and sustainability. Emissions drop sharply and reach net zero in the second half of the century. This is the closest to the Paris Agreement goal of keeping global warming well below 2°C.</p>
+      </div>
+      <div class="scenario-card" style="--c:#fdae61">
+        <h3>SSP2-4.5: Middle of the road</h3>
+        <p>Trends continue roughly as they have. Emissions stay near today's levels until about mid-century, then slowly decline, but don't reach zero by 2100.</p>
+      </div>
+      <div class="scenario-card" style="--c:#f46d43">
+        <h3>SSP3-7.0: High emissions</h3>
+        <p>Countries focus on their own security and cooperate less. Emissions keep rising and roughly double by 2100.</p>
+      </div>
+      <div class="scenario-card" style="--c:#a50026">
+        <h3>SSP5-8.5: Very high emissions</h3>
+        <p>Rapid economic growth powered mostly by fossil fuels. Emissions roughly double by 2050 and stay very high. This is the worst case the models simulate.</p>
+      </div>
+    </div>
+    <p class="note">
+      Note: these are warming numbers for land regions. Land heats up faster than the ocean, so
+      regional numbers here are often higher than the global averages you see in the news.
+    </p>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
   <script src="main.js"></script>
