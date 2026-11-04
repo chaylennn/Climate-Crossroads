@@ -3,60 +3,150 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Climate Crossroads: Exploratory Graphs</title>
+  <title>Climate Crossroads: Checkpoint</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .fig { margin: 40px 0 56px; }
-    .fig h2 { margin-bottom: 4px; font-size: 20px; }
-    .caption { color: #555; font-size: 14px; margin: 0 0 10px; max-width: 760px; }
+    .block { margin: 36px 0 48px; }
+    .block h2 { font-size: 22px; margin-bottom: 6px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+    .block p, .block li { font-size: 15px; line-height: 1.5; max-width: 780px; }
+    .fig { margin: 32px 0 52px; }
+    .fig h3 { margin-bottom: 4px; font-size: 18px; }
+    .caption { color: #555; font-size: 14px; margin: 0 0 6px; max-width: 760px; }
+    .why { font-size: 14px; margin: 0 0 10px; max-width: 760px; }
     .fig svg { width: 100%; height: auto; display: block; }
     .fig select { margin-bottom: 8px; }
+    .block .question { font-size: 20px; font-weight: 600; margin: 8px 0; }
+    .todo { background: #fff6d6; padding: 0 4px; border-radius: 3px; }
+    iframe { width: 100%; height: 760px; border: 1px solid #ddd; border-radius: 6px; }
     a { color: #2b6cb0; }
   </style>
 </head>
 <body>
-  <h1>Climate Crossroads: Exploratory Graphs</h1>
-  <p class="subtitle">
-    Data: CMIP6 near-surface air temperature (tas), 7 models, 46 IPCC AR6 land regions, 1850 to 2100.
-    All values are warming relative to each model's 1850-1900 average, using the 7-model median
-    (and min/max range) with 10-year smoothing.
-    <a href="index.html">Back to the main visualization</a>
-  </p>
+  <h1>Climate Crossroads: Project 3 Checkpoint</h1>
+  <p class="subtitle">DSC 106, Project 3, Group 47. <a href="index.html">Open the main visualization</a></p>
 
-  <section class="fig">
-    <h2>1. One past, four futures</h2>
-    <p class="caption">Average of all 46 land regions (unweighted mean of region medians). Shaded bands show the model range.</p>
-    <div id="fig1"></div>
+  <!-- 1. Team -->
+  <section class="block">
+    <h2>1. Team</h2>
+    <p><strong>Team:</strong> Group 47</p>
+    <p><strong>Project title:</strong> Climate Crossroads</p>
+    <p><strong>Members:</strong></p>
+    <ul>
+      <li>Chaylen Nguyen-Tran</li>
+      <li class="todo">Teammate name</li>
+      <li class="todo">Teammate name</li>
+      <li class="todo">Teammate name</li>
+    </ul>
   </section>
 
-  <section class="fig">
-    <h2>2. Which regions warm the most?</h2>
-    <p class="caption">Mean warming over 2081-2100 under SSP5-8.5, ranked.</p>
-    <div id="fig2"></div>
+  <!-- 2. Dataset -->
+  <section class="block">
+    <h2>2. Dataset</h2>
+    <p>
+      We are using <strong>CMIP6</strong> (Coupled Model Intercomparison Project, Phase 6) climate model
+      simulations from the NOAA public dataset on Google Cloud. CMIP6 contains output from dozens of
+      climate models run by research centers around the world, under a shared set of experiments.
+    </p>
+    <p><strong>What we use from it:</strong></p>
+    <ul>
+      <li><strong>Variable:</strong> <code>tas</code>, near-surface air temperature, at monthly resolution (<code>Amon</code> table).</li>
+      <li><strong>Experiments:</strong> <code>historical</code> (1850 to 2014) and four future scenarios (2015 to 2100):
+        SSP1-2.6 (low emissions), SSP2-4.5 (middle), SSP3-7.0 (high), and SSP5-8.5 (very high).</li>
+      <li><strong>Models:</strong> 7 models that have all five experiments: ACCESS-CM2, CanESM5, GFDL-ESM4,
+        IPSL-CM6A-LR, MIROC6, MPI-ESM1-2-LR, and MRI-ESM2-0 (first ensemble member, r1i1p1f1, for each).</li>
+      <li><strong>Regions:</strong> the 46 IPCC AR6 land regions.</li>
+    </ul>
+    <p><strong>How we transformed it</strong> (in <code>preprocessing.ipynb</code>):</p>
+    <ul>
+      <li>Converted Kelvin to °C and averaged monthly values into annual means.</li>
+      <li>Averaged each region's grid cells, weighted by cos(latitude) so cells near the poles don't count too much.</li>
+      <li>Kept years up to 2100, since only a few models run past it.</li>
+      <li>Converted temperatures to warming relative to each model's own 1850-1900 average.</li>
+      <li>Combined the 7 models into a median, plus the min and max as an uncertainty range.</li>
+      <li>Applied a 10-year centered rolling mean to smooth year-to-year noise.</li>
+    </ul>
+    <p>The result is one small CSV (region, scenario, year, median, low, high) that D3 loads directly.</p>
   </section>
 
-  <section class="fig">
-    <h2>3. Where does the choice of future matter most?</h2>
-    <p class="caption">Mean warming over 2081-2100 under low (SSP1-2.6) vs very high (SSP5-8.5) emissions, sorted by the gap between them.</p>
-    <div id="fig3"></div>
+  <!-- 3. Exploratory graphs -->
+  <section class="block">
+    <h2>3. Exploratory graphs</h2>
+    <p>All graphs below are built with D3 from the same processed CSV.</p>
+
+    <div class="fig">
+      <h3>Graph 1. One past, four futures</h3>
+      <p class="caption">Average of all 46 land regions (unweighted mean of region medians). Shaded bands show the model range.</p>
+      <p class="why"><strong>Why it matters:</strong> every scenario shares the same history, then splits apart after 2015. The future depends on which path we take.</p>
+      <div id="fig1"></div>
+    </div>
+
+    <div class="fig">
+      <h3>Graph 2. Which regions warm the most?</h3>
+      <p class="caption">Mean warming over 2081-2100 under SSP5-8.5, ranked.</p>
+      <p class="why"><strong>Why it matters:</strong> warming is not the same everywhere, so a single global number hides a lot. This pushed us toward letting users pick a region.</p>
+      <div id="fig2"></div>
+    </div>
+
+    <div class="fig">
+      <h3>Graph 3. Where does the choice of future matter most?</h3>
+      <p class="caption">Mean warming over 2081-2100 under low (SSP1-2.6) vs very high (SSP5-8.5) emissions, sorted by the gap between them.</p>
+      <p class="why"><strong>Why it matters:</strong> the gap between scenarios is the cost of the path we choose, and it is much larger in some regions than others.</p>
+      <div id="fig3"></div>
+    </div>
+
+    <div class="fig">
+      <h3>Graph 4. When does each region pass +2°C?</h3>
+      <p class="caption">First year the smoothed median reaches 2°C of warming, under each scenario. Hover a dot for the exact year.</p>
+      <p class="why"><strong>Why it matters:</strong> the scenario changes not just how much warming happens, but when a region hits a threshold, or whether it hits it at all by 2100.</p>
+      <div id="fig4"></div>
+    </div>
+
+    <div class="fig">
+      <h3>Graph 5. Warming decade by decade</h3>
+      <p class="caption">Mean warming per decade for every region. Switch scenarios to compare; the color scale stays fixed so colors are comparable. Hover a cell for the value.</p>
+      <p class="why"><strong>Why it matters:</strong> switching scenarios here shows how fast the differences build up over time, which a single snapshot year can't show.</p>
+      <div id="fig5"></div>
+    </div>
+
+    <div class="fig">
+      <h3>Graph 6. Do the models agree?</h3>
+      <p class="caption">Each dot is a region. x: median warming over 2081-2100 under SSP5-8.5. y: model spread (max minus min across the 7 models). Hover for the region name.</p>
+      <p class="why"><strong>Why it matters:</strong> models disagree more in some places than others, so our final chart shows a range, not just one line.</p>
+      <div id="fig6"></div>
+    </div>
   </section>
 
-  <section class="fig">
-    <h2>4. When does each region pass +2°C?</h2>
-    <p class="caption">First year the smoothed median reaches 2°C of warming, under each scenario. Hover a dot for the exact year.</p>
-    <div id="fig4"></div>
+  <!-- 4. Question -->
+  <section class="block">
+    <h2>4. Our question</h2>
+    <p class="question">How much does the emissions path we choose change the future of where you live?</p>
+    <p>
+      Working title: <strong>Climate Crossroads</strong>. The graphs above show that (1) every region shares
+      the same past but the scenarios split sharply after 2015, (2) how much warming happens, and when,
+      depends heavily on location, and (3) the models agree on the direction but not the exact amount.
+      Our final graph lets a user pick a region and compare the paths directly, with the model range shown.
+    </p>
   </section>
 
-  <section class="fig">
-    <h2>5. Warming decade by decade</h2>
-    <p class="caption">Mean warming per decade for every region. Switch scenarios to compare; the color scale stays fixed so colors are comparable. Hover a cell for the value.</p>
-    <div id="fig5"></div>
-  </section>
-
-  <section class="fig">
-    <h2>6. Do the models agree?</h2>
-    <p class="caption">Each dot is a region. x: median warming over 2081-2100 under SSP5-8.5. y: model spread (max minus min across the 7 models). Hover for the region name.</p>
-    <div id="fig6"></div>
+  <!-- 5. Progress -->
+  <section class="block">
+    <h2>5. Current progress on the final dynamic graph</h2>
+    <p><strong>Working now:</strong></p>
+    <ul>
+      <li>Line chart of warming from 1850 to 2100, with the historical path splitting into four scenario paths at 2015.</li>
+      <li>Shaded bands showing the range across the 7 models.</li>
+      <li>Region dropdown (46 regions) with animated transitions.</li>
+      <li>Scenario toggle buttons to show or hide individual paths; the y-axis rescales to fit.</li>
+      <li>Hover tooltip showing each visible path's median and model range for that year.</li>
+    </ul>
+    <p><strong>Next steps:</strong></p>
+    <ul>
+      <li>A map for picking regions (stretch goal), or a few cities snapped to the nearest grid cell.</li>
+      <li>Annotations that point out key moments, such as when a region crosses +2°C.</li>
+      <li>Polish (labels, colors, mobile layout) and the final write-up.</li>
+    </ul>
+    <p>Live preview of the current version:</p>
+    <iframe src="index.html" title="Climate Crossroads main visualization"></iframe>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
