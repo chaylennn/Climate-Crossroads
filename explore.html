@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Climate Crossroads: Exploratory Graphs</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .fig { margin: 40px 0 56px; }
+    .fig h2 { margin-bottom: 4px; font-size: 20px; }
+    .caption { color: #555; font-size: 14px; margin: 0 0 10px; max-width: 760px; }
+    .fig svg { width: 100%; height: auto; display: block; }
+    .fig select { margin-bottom: 8px; }
+    a { color: #2b6cb0; }
+  </style>
+</head>
+<body>
+  <h1>Climate Crossroads: Exploratory Graphs</h1>
+  <p class="subtitle">
+    Data: CMIP6 near-surface air temperature (tas), 7 models, 46 IPCC AR6 land regions, 1850 to 2100.
+    All values are warming relative to each model's 1850-1900 average, using the 7-model median
+    (and min/max range) with 10-year smoothing.
+    <a href="index.html">Back to the main visualization</a>
+  </p>
+
+  <section class="fig">
+    <h2>1. One past, four futures</h2>
+    <p class="caption">Average of all 46 land regions (unweighted mean of region medians). Shaded bands show the model range.</p>
+    <div id="fig1"></div>
+  </section>
+
+  <section class="fig">
+    <h2>2. Which regions warm the most?</h2>
+    <p class="caption">Mean warming over 2081-2100 under SSP5-8.5, ranked.</p>
+    <div id="fig2"></div>
+  </section>
+
+  <section class="fig">
+    <h2>3. Where does the choice of future matter most?</h2>
+    <p class="caption">Mean warming over 2081-2100 under low (SSP1-2.6) vs very high (SSP5-8.5) emissions, sorted by the gap between them.</p>
+    <div id="fig3"></div>
+  </section>
+
+  <section class="fig">
+    <h2>4. When does each region pass +2°C?</h2>
+    <p class="caption">First year the smoothed median reaches 2°C of warming, under each scenario. Hover a dot for the exact year.</p>
+    <div id="fig4"></div>
+  </section>
+
+  <section class="fig">
+    <h2>5. Warming decade by decade</h2>
+    <p class="caption">Mean warming per decade for every region. Switch scenarios to compare; the color scale stays fixed so colors are comparable. Hover a cell for the value.</p>
+    <div id="fig5"></div>
+  </section>
+
+  <section class="fig">
+    <h2>6. Do the models agree?</h2>
+    <p class="caption">Each dot is a region. x: median warming over 2081-2100 under SSP5-8.5. y: model spread (max minus min across the 7 models). Hover for the region name.</p>
+    <div id="fig6"></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+  <script src="explore.js"></script>
+</body>
+</html>
