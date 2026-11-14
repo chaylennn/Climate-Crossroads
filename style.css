@@ -63,6 +63,26 @@ select { font-size: 15px; padding: 4px 8px; margin-bottom: 16px; }
   border-radius: 6px;
   padding: 10px 12px;
 }
-.scenario-card h3 { font-size: 15px; margin: 0 0 4px; color: var(--c); }
+.scenario-card h3 { font-size: 15px; margin: 0 0 4px; color: var(--t, var(--c)); }
 .scenario-card p { font-size: 14px; line-height: 1.45; margin: 0; }
 .note { color: #555; font-size: 13px; }
+
+/* quick picks + takeaway */
+#quick-picks { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; }
+.pick-label { font-size: 13px; color: #666; margin-right: 2px; }
+.pick {
+  border: 1px solid #bbb; background: #fff; color: #333;
+  border-radius: 6px; padding: 4px 10px; font-size: 13px; cursor: pointer;
+}
+.pick:hover { background: #f2f2f2; }
+#takeaway {
+  max-width: 800px; font-size: 15px; line-height: 1.5;
+  background: #f7f7f7; border-left: 4px solid #a50026;
+  padding: 10px 14px; border-radius: 4px; margin: 4px 0 24px;
+}
+
+/* write-up */
+.writeup { margin: 40px 0 60px; max-width: 820px; }
+.writeup h2 { font-size: 22px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+.writeup h3 { font-size: 17px; margin: 22px 0 6px; }
+.writeup p { font-size: 15px; line-height: 1.6; }

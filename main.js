@@ -9,6 +9,9 @@ const names = {
   ssp370: "SSP3-7.0 (high)",
   ssp585: "SSP5-8.5 (very high)"
 };
+// short names for the labels at the end of each line
+const shortNames = { ssp126: "Low", ssp245: "Middle", ssp370: "High", ssp585: "Very high" };
+const THRESHOLD = 2;   // +2°C reference line
 const active = new Set(Object.keys(colors));   // scenarios currently shown
 const fmt = d3.format("+.1f");
 
@@ -25,6 +28,7 @@ const x = d3.scaleLinear().range([0, width]);
 const y = d3.scaleLinear().range([height, 0]);
 const xAxis = svg.append("g").attr("transform", `translate(0,${height})`);
 const yAxis = svg.append("g");
+const ref = svg.append("g");    // +2°C reference line (drawn under the data)
 const plot = svg.append("g");   // bands, lines, labels go here
 
 svg.append("text")
@@ -58,6 +62,47 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
   select.selectAll("option").data(regions).join("option").text(d => d);
   select.on("change", e => update(e.target.value));
 
+  // late-century (2081-2100) median warming for a region and scenario
+  const late = (region, scen) => d3.mean(
+    data.filter(d => d.region === region && d.scenario === scen && d.year >= 2081), d => d.median);
+
+  // quick-pick buttons: a familiar region plus the fastest and slowest warming regions
+  const lateHigh = regions.map(r => ({ region: r, v: late(r, "ssp585") })).sort((a, b) => b.v - a.v);
+  const picks = [
+    { label: "Western North America (incl. California)", region: "W.North-America" },
+    { label: `Fastest warming: ${lateHigh[0].region}`, region: lateHigh[0].region },
+    { label: `Slowest warming: ${lateHigh[lateHigh.length - 1].region}`, region: lateHigh[lateHigh.length - 1].region }
+  ];
+  d3.select("#quick-picks").selectAll("button").data(picks).join("button")
+    .attr("class", "pick").text(d => d.label)
+    .on("click", (e, d) => { select.property("value", d.region); update(d.region); });
+
+  // first year the median reaches the threshold (historical + one scenario)
+  function crossing(region, scen) {
+    const series = data.filter(d => d.region === region && (d.scenario === "historical" || d.scenario === scen))
+      .sort((a, b) => a.year - b.year);
+    const hit = series.find(d => d.median >= THRESHOLD);
+    return hit ? hit.year : null;
+  }
+
+  // one-paragraph summary under the chart for the selected region
+  function takeaway(region) {
+    const lo = late(region, "ssp126"), hi = late(region, "ssp585");
+    const cLo = crossing(region, "ssp126"), cHi = crossing(region, "ssp585");
+    const loR = +lo.toFixed(1), hiR = +hi.toFixed(1);
+    let cross;
+    if (cLo != null && cLo < 2015) {
+      cross = `It had already passed +2°C by ${cLo}, before the paths split.`;
+    } else {
+      const when = c => c == null ? "never passes +2°C by 2100" : `passes +2°C around ${c}`;
+      cross = `On the very high path it ${when(cHi)}; on the low path it ${when(cLo)}.`;
+    }
+    d3.select("#takeaway").html(
+      `<strong>${region}:</strong> by 2081-2100 this region warms about <strong>${fmt(loR)}°C</strong> on the low path ` +
+      `and about <strong>${fmt(hiR)}°C</strong> on the very high path, a gap of <strong>${(hiR - loR).toFixed(1)}°C</strong>. ` +
+      cross);
+  }
+
   // scenario toggle buttons
   d3.select("#scenario-toggles").selectAll("button")
     .data(Object.keys(colors).filter(k => k !== "historical"))
@@ -83,7 +128,7 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
 
     plot.selectAll(".band").data(byScenario, d => d[0])
       .join("path").attr("class", "band")
-      .attr("fill", d => colors[d[0]]).attr("opacity", 0.15)
+      .attr("fill", d => colors[d[0]]).attr("opacity", 0.12)
       .transition().duration(500).attr("d", d => area(d[1]));
 
     plot.selectAll(".path").data(byScenario, d => d[0])
@@ -91,13 +136,31 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
       .attr("fill", "none").attr("stroke", d => colors[d[0]]).attr("stroke-width", 2)
       .transition().duration(500).attr("d", d => line(d[1]));
 
-    plot.selectAll(".label").data(byScenario, d => d[0])
+    // +2°C reference line, shown only when it fits in the current y range
+    const showRef = y.domain()[0] < THRESHOLD && y.domain()[1] > THRESHOLD;
+    ref.selectAll("line").data(showRef ? [THRESHOLD] : []).join("line")
+      .attr("x1", 0).attr("x2", width)
+      .attr("stroke", "#333").attr("stroke-dasharray", "2 4").attr("opacity", 0.6)
+      .transition().duration(500).attr("y1", y(THRESHOLD)).attr("y2", y(THRESHOLD));
+    ref.selectAll("text").data(showRef ? [THRESHOLD] : []).join("text")
+      .attr("x", 4).attr("font-size", 11).attr("fill", "#333").text("+2°C")
+      .transition().duration(500).attr("y", y(THRESHOLD) - 4);
+
+    // end-of-line labels for the future paths, nudged apart so they don't overlap
+    const labels = byScenario.filter(d => d[0] !== "historical")
+      .map(([k, rows]) => ({ k, y: y(rows[rows.length - 1].median), x: x(rows[rows.length - 1].year) + 5 }))
+      .sort((a, b) => a.y - b.y);
+    for (let i = 1; i < labels.length; i++) {
+      if (labels[i].y - labels[i - 1].y < 14) labels[i].y = labels[i - 1].y + 14;
+    }
+    plot.selectAll(".label").data(labels, d => d.k)
       .join("text").attr("class", "label")
-      .attr("font-size", 12)
-      .attr("fill", d => colors[d[0]]).text(d => d[0])
+      .attr("font-size", 12).attr("font-weight", 600).attr("dominant-baseline", "middle")
+      .attr("fill", d => d.k === "ssp245" ? "#d4861f" : colors[d.k]).text(d => shortNames[d.k])
       .transition().duration(500)
-      .attr("x", d => x(d[1][d[1].length - 1].year) + 5)
-      .attr("y", d => y(d[1][d[1].length - 1].median));
+      .attr("x", d => d.x).attr("y", d => d.y);
+
+    takeaway(region);
   }
 
   // hover: vertical line + tooltip with values for that year
@@ -155,5 +218,8 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
     .style("pointer-events", "none")
     .style("display", "none");
 
-  update(regions[0]);
+  // start on a familiar region
+  const start = regions.includes("W.North-America") ? "W.North-America" : regions[0];
+  select.property("value", start);
+  update(start);
 });
