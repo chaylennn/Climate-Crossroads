@@ -1,3 +1,31 @@
+// readable names for the IPCC AR6 region codes
+const regionNames = {
+  "Arabian-Peninsula": "Arabian Peninsula", "C.Australia": "Central Australia",
+  "C.North-America": "Central North America", "Caribbean": "Caribbean",
+  "Central-Africa": "Central Africa", "E.Antarctica": "East Antarctica",
+  "E.Asia": "East Asia", "E.Australia": "Eastern Australia",
+  "E.C.Asia": "East Central Asia", "E.Europe": "Eastern Europe",
+  "E.North-America": "Eastern North America", "E.Siberia": "East Siberia",
+  "E.Southern-Africa": "East Southern Africa", "Greenland/Iceland": "Greenland and Iceland",
+  "Madagascar": "Madagascar", "Mediterranean": "Mediterranean",
+  "N.Australia": "Northern Australia", "N.Central-America": "Northern Central America",
+  "N.E.North-America": "Northeastern North America", "N.E.South-America": "Northeastern South America",
+  "N.Eastern-Africa": "Northeastern Africa", "N.Europe": "Northern Europe",
+  "N.South-America": "Northern South America", "N.W.North-America": "Northwestern North America",
+  "N.W.South-America": "Northwestern South America", "New-Zealand": "New Zealand",
+  "Russian-Arctic": "Russian Arctic", "Russian-Far-East": "Russian Far East",
+  "S.Asia": "South Asia", "S.Australia": "Southern Australia",
+  "S.Central-America": "Southern Central America", "S.E.Asia": "Southeast Asia",
+  "S.E.South-America": "Southeastern South America", "S.Eastern-Africa": "Southeastern Africa",
+  "S.South-America": "Southern South America", "S.W.South-America": "Southwestern South America",
+  "Sahara": "Sahara", "South-American-Monsoon": "South American Monsoon",
+  "Tibetan-Plateau": "Tibetan Plateau", "W.Antarctica": "West Antarctica",
+  "W.C.Asia": "West Central Asia", "W.North-America": "Western North America",
+  "W.Siberia": "West Siberia", "W.Southern-Africa": "West Southern Africa",
+  "West&Central-Europe": "Western and Central Europe", "Western-Africa": "Western Africa"
+};
+const pretty = r => regionNames[r] || r.replace(/[.-]/g, " ");
+
 const colors = {
   historical: "#555", ssp126: "#1a9850", ssp245: "#fdae61",
   ssp370: "#f46d43", ssp585: "#a50026"
@@ -57,9 +85,9 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
     .text("Paths split");
 
   // region dropdown
-  const regions = [...new Set(data.map(d => d.region))].sort();
+  const regions = [...new Set(data.map(d => d.region))].sort((a, b) => pretty(a).localeCompare(pretty(b)));
   const select = d3.select("#region-select");
-  select.selectAll("option").data(regions).join("option").text(d => d);
+  select.selectAll("option").data(regions).join("option").attr("value", d => d).text(d => pretty(d));
   select.on("change", e => update(e.target.value));
 
   // late-century (2081-2100) median warming for a region and scenario
@@ -69,9 +97,9 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
   // quick-pick buttons: a familiar region plus the fastest and slowest warming regions
   const lateHigh = regions.map(r => ({ region: r, v: late(r, "ssp585") })).sort((a, b) => b.v - a.v);
   const picks = [
-    { label: "W. North America", region: "W.North-America" },
-    { label: `Fastest: ${lateHigh[0].region}`, region: lateHigh[0].region },
-    { label: `Slowest: ${lateHigh[lateHigh.length - 1].region}`, region: lateHigh[lateHigh.length - 1].region }
+    { label: "Western North America", region: "W.North-America" },
+    { label: `Fastest: ${pretty(lateHigh[0].region)}`, region: lateHigh[0].region },
+    { label: `Slowest: ${pretty(lateHigh[lateHigh.length - 1].region)}`, region: lateHigh[lateHigh.length - 1].region }
   ];
   d3.select("#quick-picks").selectAll("button").data(picks).join("button")
     .attr("class", "pick").text(d => d.label)
@@ -98,7 +126,7 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
       cross = `On the very high path it ${when(cHi)}; on the low path it ${when(cLo)}.`;
     }
     d3.select("#takeaway").html(
-      `<strong>${region}:</strong> by 2081-2100 this region warms about <strong>${fmt(loR)}°C</strong> on the low path ` +
+      `<strong>${pretty(region)}:</strong> by 2081-2100 this region warms about <strong>${fmt(loR)}°C</strong> on the low path ` +
       `and about <strong>${fmt(hiR)}°C</strong> on the very high path, a gap of <strong>${(hiR - loR).toFixed(1)}°C</strong>. ` +
       cross);
   }
