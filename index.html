@@ -123,16 +123,17 @@
 
     <h3>Development process</h3>
     <p>
-      <strong>Team split.</strong> [Name] handled the data processing in Colab. [Name] built the D3 chart and
-      interactions. [Name] worked on the exploratory graphs and the checkpoint video. [Name] wrote the write-up and
-      tested the site. (Edit this to match who actually did what.)
+      <strong>Team split.</strong> Chaylen handled the technical side of the project, including the data processing
+      in Colab and building the D3 chart and its interactions, with some technical help from Jeffrey. Jeffrey also
+      recorded and put together the checkpoint video. Peter, Jayleen, and Jeffrey contributed to the write-ups, and
+      Peter and Jayleen helped shape the project's direction and gave feedback on the design as it developed.
     </p>
     <p>
-      <strong>Time.</strong> We spent roughly [XX] people-hours in total. The data pipeline took the most time:
-      finding the right files in the CMIP6 bucket, fixing a calendar error some models caused (they use a 365-day
-      "noleap" calendar), getting all 7 models to load, and noticing that a few models run past 2100, which created a
-      fake jump in the median until we capped the data. On the D3 side, the hover tooltip and keeping labels and bands
-      in sync when scenarios are toggled took the longest to get right.
+      <strong>Time.</strong> We spent roughly 15 people-hours in total. The preprocessing took the most time.
+      CMIP6 is a very large dataset, so a lot of work went into exploring it to find the files we needed, making sure
+      all 7 models loaded correctly, and getting the full pipeline to run without errors. Once the data was ready, the
+      D3 side took the next most time. Getting the hover tooltip to work and keeping the lines, bands, and
+      labels in sync when scenarios are toggled on and off was a bit of a struggle.
     </p>
   </section>
 
