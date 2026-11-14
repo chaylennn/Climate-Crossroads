@@ -17,18 +17,21 @@
 
   <div class="intro">
     <p>
-      Every region on Earth shares the same climate past, but its future depends on how much
-      greenhouse gas the world emits from here on. This chart shows how much warmer a region gets
-      compared to the late 1800s, before most human emissions. The gray line is what models
-      simulate for the past. At 2015 it splits into four possible futures, one for each emissions
-      scenario.
+      Every region has warmed along a similar path in the past, but where this path goes next depends on how much
+      greenhouse gas the world keeps on emitting. The gray line shows our past before the rise of human emissions, and
+      how much a region has warmed since the 1800s. In 2015, the visualization splits into four colored paths. Each path
+      represents a "what if" scenario that climate scientists use to imagine how the world's global emissions could
+      develop depending on the actions humans take to alleviate or worsen climate change. This can range from quickly
+      switching to clean energy resources to, on the flip side, relying heavily on fossil fuels. Each of the different
+      models shows how much warmer a certain region would get under each one of these scenarios, so you can see how
+      much our choices change its future.
     </p>
     <p><strong>How to read it:</strong></p>
     <ul>
-      <li><strong>Lines</strong> show the middle estimate (the median of 7 climate models).</li>
-      <li><strong>Shaded bands</strong> show the full range across those models. A wider band means the models disagree more.</li>
-      <li>The dashed <strong>+2°C line</strong> marks a key warming threshold, so you can see when each path crosses it.</li>
-      <li><strong>Pick a region</strong> from the dropdown or the quick picks, <strong>turn scenarios on or off</strong> with the buttons, and <strong>hover</strong> over the chart to see exact values for any year.</li>
+      <li><strong>Lines</strong> show the middle estimate of the 7 climate models' predictions for each of the scenarios (the median of 7 climate models).</li>
+      <li><strong>Shaded bands</strong> show the full range across those models. A wider band means the models disagree more, and a smaller band shows more agreement between models.</li>
+      <li>The dashed horizontal <strong>+2°C line</strong> marks a key warming threshold. Past this point, scientists expect much more severe impacts on the climate, such as heat waves and droughts, so you can see when each path crosses it.</li>
+      <li><strong>Pick a region</strong> from the dropdown, or choose one of the quick selection picks below it. <strong>Turn the colored scenario buttons</strong> (SSP1-2.6, SSP2-4.5, SSP3-7.0, or SSP5-8.5) on or off to compare how each climate path affects that region. <strong>Hover</strong> over the chart to see exact values of warming for any year.</li>
     </ul>
   </div>
 
@@ -45,14 +48,15 @@
   <section class="scenarios">
     <h2>What do the scenarios mean?</h2>
     <p>
-      Each scenario is a "Shared Socioeconomic Pathway" (SSP), a story about how the world might
-      develop and how much it emits. The first number is the pathway (1 to 5). The second number is
-      how much extra heat the atmosphere traps by 2100, in watts per square meter. Bigger means more warming.
+      Each scenario is called a "Shared Socioeconomic Pathway" (SSP). Each one is a possible story for the future, like
+      how fast the population grows, how the economy develops, and how much countries rely on clean energy sources vs
+      fossil fuels. Scientists around the world use these same stories/baselines, so their results can be compared
+      accurately and fairly.
     </p>
     <div class="scenario-grid">
       <div class="scenario-card" style="--c:#1a9850">
         <h3>SSP1-2.6: Low emissions</h3>
-        <p>The world moves quickly toward clean energy and sustainability. Emissions drop sharply and reach net zero in the second half of the century. This is the closest to the Paris Agreement goal of keeping global warming well below 2°C.</p>
+        <p>The world moves quickly toward clean energy and sustainability. Emissions drop sharply and reach net zero in the second half of the century. Of the four scenarios shown here, this is the closest to the Paris Agreement goal of keeping global warming well below 2°C.</p>
       </div>
       <div class="scenario-card" style="--c:#fdae61; --t:#b86e12">
         <h3>SSP2-4.5: Middle of the road</h3>
@@ -68,8 +72,14 @@
       </div>
     </div>
     <p class="note">
-      Note: these are warming numbers for land regions. Land heats up faster than the ocean, so
-      regional numbers here are often higher than the global averages you see in the news.
+      Note: These statistics cover the warming of land regions. Land heats up faster than the ocean, so regional
+      numbers here are often higher than the global averages that include the ocean.
+    </p>
+    <p class="note">
+      Sources for the scenario descriptions:
+      <a href="https://www.ipcc.ch/report/ar6/wg1/">IPCC Sixth Assessment Report, Working Group I (2021)</a>;
+      <a href="https://www.tbsnews.net/bangladesh/environment/climate-change/explainer-un-climate-reports-five-futures-decoded-285697">"The UN climate report's five futures, decoded" (Reuters)</a>;
+      <a href="https://en.wikipedia.org/wiki/Shared_Socioeconomic_Pathways">Shared Socioeconomic Pathways (Wikipedia)</a>.
     </p>
   </section>
 
@@ -79,69 +89,69 @@
 
     <h3>Motivation</h3>
     <p>
-      Most climate graphics show one global number, which makes global warming feel abstract. We wanted to answer a
-      more personal question: how much hotter will a specific part of the world get, and how much does that depend on
-      the emissions path we take? CMIP6 lets us compare the same regions under four different futures, so we built a
-      chart where the shared past visibly splits apart into those futures starting at 2015.
+      Many climate graphics online and in other sources show static visualizations with numbers and figures, often
+      making global warming feel abstract and far away. Climate change is a prominent issue, and so we wanted to create
+      a story that can urge people to act now in order to change a worsened climate future. To address this, we want to
+      explore the question: how much hotter will specific parts of the world become? This would help us envision which
+      regions are better or worse at reducing their effects of climate change and compare these regions against each
+      other. We answered this question using CMIP6's four different futures and made a chart showing how the past
+      climate outcomes split into the hypothetical scenarios in the future.
     </p>
 
     <h3>Design rationale</h3>
     <p>
-      <strong>Visual encodings.</strong> We used a line chart because the data to encode is change over time, and
-      position along a common scale is the most interpretable way to compare values. Each scenario is one line (the
-      median of 7 models), and the shaded band around it shows the full range across models. We wanted the uncertainty
-      to be visible instead of hiding it behind a single line, hence the shaded regions. The dashed line at 2015 marks
-      where the historical data ends and the scenarios begin, and the dashed +2°C line gives readers a reference point
-      to judge each path against.
+      <strong>Visual encodings.</strong> We used a line chart because we need to encode changes over time, and so
+      position along a common scale is the best way. Each scenario is a different colored line, and the shaded band
+      around each one shows the full variance across models. We did this since we wanted the uncertainty to be visible.
+      The dashed line starting at 2015 marks where the historical data ends and the hypothetical scenarios begin, while
+      the +2°C reference line gives readers something to compare each path with.
     </p>
     <p>
-      <strong>Color.</strong> The scenarios use an ordered palette from green (low emissions) through orange to dark
-      red (very high emissions), so color follows the amount of warming. The historical line is gray because it is
-      shared by every future. We also label the end of each line by name, so the chart can be read without relying on
-      color alone.
+      <strong>Color.</strong> The scenarios use an ordered palette from green to dark red, with more red colors
+      signalling more warming. We use contrasting colors in order to distinguish the climate paths easily and used
+      typical cultural signifiers, such as green being good (or go in typical U.S. stoplights) and red being bad (or stop
+      in U.S. stoplights). The historical line is gray because this information came from the past, and there is no new
+      information to be gained. This acts as a baseline to the climate paths. We also label the end of each line by
+      name, so each line can be followed to its scenario name.
     </p>
     <p>
-      <strong>Data transformations.</strong> We converted monthly temperature to annual means, averaged grid cells
-      within each IPCC AR6 land region (weighted by cos(latitude)), and expressed everything as warming relative to each
-      model's own 1850-1900 average. That baseline removes the differences between models that simply run warmer or
-      cooler. We then took the median and min/max across 7 models, applied a 10-year rolling mean to smooth
-      year-to-year noise, and cut the data at 2100 because only a few models run past it. These steps are summarized
-      in the subtitle at the top of the page.
+      <strong>Data transformations.</strong> We averaged monthly temperature to yearly means, averaged grid cells within
+      each IPCC AR6 land region weighted by cos(latitude), and expressed everything as warming growth relative to each
+      model's own 1850-1900 average. That baseline removes the differences between models that are simply overall warmer
+      or cooler. We then took the median, min, and max across 7 models, applied a 10-year rolling mean to smooth
+      year-to-year noise, and cut the data at 2100 because only a few models run past it.
     </p>
     <p>
-      <strong>Interactions.</strong> The scenario buttons let readers add or remove any of the climate paths, so they
-      can isolate the futures they care about and compare them directly. This also fixes overplotting: with all four
-      bands on, the low and middle paths overlap, and the y-axis rescales to fit whatever is shown. The "Try:" links
-      guide readers to the regions that are most useful to look at, like the fastest- and slowest-warming regions,
-      instead of making them sift through all 46 regions in the dropdown. The summary text under the chart is also
-      reactive: it updates with each region, so readers can read about the gap between paths and when each one crosses
-      +2°C while looking at the graph. Hovering shows exact values and the model range for any year. We also replaced
-      the raw IPCC region codes (like "W.North-America") with plain names (like "Western North America") in the
-      dropdown, the "Try:" links, and the summary text, to make the page easier to read and more cohesive for those who
-      don't understand the shortened region names.
+      <strong>Interactions.</strong> The scenario buttons let readers toggle the climate paths so they can isolate what
+      they're interested in looking at. This also fixes overplotting. With all four bands on, the low and middle paths
+      overlap, and the y-axis scales to fit whatever is shown. The "Try:" links guide readers to the regions that are
+      most interesting to look at, like the fastest and slowest regions in terms of warming growth. This is better than
+      having them sift through all 46 regions to find that information. The summary text under the chart also updates
+      with each region, so readers can see for themselves the gap between paths and notably when each one crosses the
+      +2°C reference line. Hovering a point in time shows exact values and the model range for any year. We also
+      replaced the raw IPCC region codes with plain names. For example, we changed W.North-America to Western North
+      America for readers.
     </p>
     <p>
       <strong>Alternatives we considered.</strong> We considered a choropleth map with a year slider, which would show
-      geography better but makes it hard to compare scenarios over time. We also considered small multiples (one panel
-      per region), but 46 panels would be too small to read. Since we knew our main takeaway would be changes in
-      regional temperature over time for specific regions, we decided against the choropleth map or panel view. Hence,
-      we chose one detailed chart with a region selector and used our exploratory graphs page for the regional overview.
+      geography better. However, a choropleth map makes it very hard to compare scenarios over time neatly and
+      efficiently. We also considered small multiples panels per region, but 46 panels is too many to display without
+      the individual panels becoming too small. Therefore, we chose one detailed chart with a region selector and used
+      our exploratory graphs page for the regional overview.
     </p>
 
     <h3>Development process</h3>
     <p>
-      <strong>Team split.</strong> Chaylen handled the technical side of the project, including the data processing
-      in Colab and building the D3 chart and its interactions, with some technical help from Jeffrey. Jeffrey also
-      recorded and put together the checkpoint video. Chaylen, Peter, Jayleen, and Jeffrey contributed to the write-ups, and
-      Peter and Jayleen helped shape the project's direction and gave feedback on the design as it developed.
+      <strong>Team split.</strong> Chaylen mostly handled the technical side of the project with some help from Peter,
+      which includes the data processing and building the D3 chart. Jeffrey also recorded and put together the
+      checkpoint video. Peter, Jayleen, and Jeffrey contributed to the write-ups.
     </p>
     <p>
-      <strong>Time.</strong> We spent roughly 15 people-hours in total. The preprocessing took the most time. CMIP6 is a
-      very large dataset, so a lot of work went into exploring it to find the files we needed, making sure all 7 models
-      loaded correctly, and getting the full pipeline to run without errors. Once the data was ready, the D3 side took
-      the next most time. Getting the hover tooltip to work and keeping the lines, bands, and labels in sync when
-      scenarios are toggled on and off was a bit of a struggle. Additionally, workshopping the details, evaluating
-      feedback, and polishing the final design also took a while.
+      <strong>Time.</strong> We spent roughly 15 hours in total. The preprocessing took a lot of time since CMIP6 is a
+      very large dataset. A lot of work went into exploring the dataset to find the files we needed and making sure all
+      7 models loaded correctly, as well as the full pipeline running correctly. After that, the D3 side took the next
+      most time. Getting the hover tooltip to work and getting all of the lines, bands, and labels to agree when
+      scenarios are toggled were tasks we struggled with.
     </p>
   </section>
 
