@@ -69,9 +69,9 @@ d3.csv("data/climate_paths.csv", d3.autoType).then(raw => {
   // quick-pick buttons: a familiar region plus the fastest and slowest warming regions
   const lateHigh = regions.map(r => ({ region: r, v: late(r, "ssp585") })).sort((a, b) => b.v - a.v);
   const picks = [
-    { label: "Western North America (incl. California)", region: "W.North-America" },
-    { label: `Fastest warming: ${lateHigh[0].region}`, region: lateHigh[0].region },
-    { label: `Slowest warming: ${lateHigh[lateHigh.length - 1].region}`, region: lateHigh[lateHigh.length - 1].region }
+    { label: "W. North America", region: "W.North-America" },
+    { label: `Fastest: ${lateHigh[0].region}`, region: lateHigh[0].region },
+    { label: `Slowest: ${lateHigh[lateHigh.length - 1].region}`, region: lateHigh[lateHigh.length - 1].region }
   ];
   d3.select("#quick-picks").selectAll("button").data(picks).join("button")
     .attr("class", "pick").text(d => d.label)
