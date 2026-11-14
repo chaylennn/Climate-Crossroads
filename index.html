@@ -79,19 +79,20 @@
 
     <h3>Motivation</h3>
     <p>
-      Most climate graphics show one global number, which makes warming feel abstract. We wanted to answer a more
-      personal question: how much hotter will a specific part of the world get, and how much does that depend on the
-      emissions path we take? CMIP6 lets us compare the same regions under four different futures, so we built a
-      chart where the shared past visibly splits into those futures at 2015.
+      Most climate graphics show one global number, which makes global warming feel abstract. We wanted to answer a
+      more personal question: how much hotter will a specific part of the world get, and how much does that depend on
+      the emissions path we take? CMIP6 lets us compare the same regions under four different futures, so we built a
+      chart where the shared past visibly splits apart into those futures starting at 2015.
     </p>
 
     <h3>Design rationale</h3>
     <p>
-      <strong>Visual encodings.</strong> We used a line chart because the main thing to read is change over time, and
-      position along a common scale is the most accurate way to compare values. Each scenario is one line (the median
-      of 7 models), and the shaded band around it shows the full range across models. We wanted the uncertainty to be
-      visible instead of hiding it behind a single line. The dashed line at 2015 marks where the historical runs end
-      and the scenarios begin, and the dashed +2°C line gives readers a reference point to judge each path against.
+      <strong>Visual encodings.</strong> We used a line chart because the data to encode is change over time, and
+      position along a common scale is the most interpretable way to compare values. Each scenario is one line (the
+      median of 7 models), and the shaded band around it shows the full range across models. We wanted the uncertainty
+      to be visible instead of hiding it behind a single line, hence the shaded regions. The dashed line at 2015 marks
+      where the historical data ends and the scenarios begin, and the dashed +2°C line gives readers a reference point
+      to judge each path against.
     </p>
     <p>
       <strong>Color.</strong> The scenarios use an ordered palette from green (low emissions) through orange to dark
@@ -108,22 +109,23 @@
       in the subtitle at the top of the page.
     </p>
     <p>
-      <strong>Interactions.</strong> The scenario buttons let readers take out or add back any of the climate paths,
-      so they can isolate the futures they care about and compare them directly. This also fixes overplotting: with
-      all four bands on, the low and middle paths overlap, and the y-axis rescales to fit whatever is shown. The
-      "Try:" links guide readers to the regions that are most useful to look at, like the fastest- and
-      slowest-warming regions, instead of making them sift through all 46 regions in the dropdown. The summary text
-      under the chart is also reactive: it updates with each region, so readers can read about the gap between paths
-      and when each one crosses +2°C while looking at the graph. Hovering shows exact values and the model range for
-      any year. We also replaced the raw IPCC region codes (like "W.North-America") with plain names (like "Western North
-      America") in the dropdown, the "Try:" links, and the summary text, to make the page easier to read, especially for those
-      who do not understand the shortened region names, and make the design more cohesive.
+      <strong>Interactions.</strong> The scenario buttons let readers add or remove any of the climate paths, so they
+      can isolate the futures they care about and compare them directly. This also fixes overplotting: with all four
+      bands on, the low and middle paths overlap, and the y-axis rescales to fit whatever is shown. The "Try:" links
+      guide readers to the regions that are most useful to look at, like the fastest- and slowest-warming regions,
+      instead of making them sift through all 46 regions in the dropdown. The summary text under the chart is also
+      reactive: it updates with each region, so readers can read about the gap between paths and when each one crosses
+      +2°C while looking at the graph. Hovering shows exact values and the model range for any year. We also replaced
+      the raw IPCC region codes (like "W.North-America") with plain names (like "Western North America") in the
+      dropdown, the "Try:" links, and the summary text, to make the page easier to read and more cohesive for those who
+      don't understand the shortened region names.
     </p>
     <p>
       <strong>Alternatives we considered.</strong> We considered a choropleth map with a year slider, which would show
       geography better but makes it hard to compare scenarios over time. We also considered small multiples (one panel
-      per region), but 46 panels would be too small to read. We chose one detailed chart with a region selector and
-      used our exploratory graphs page for the regional overview.
+      per region), but 46 panels would be too small to read. Since we knew our main takeaway would be changes in
+      regional temperature over time for specific regions, we decided against the choropleth map or panel view. Hence,
+      we chose one detailed chart with a region selector and used our exploratory graphs page for the regional overview.
     </p>
 
     <h3>Development process</h3>
@@ -134,11 +136,12 @@
       Peter and Jayleen helped shape the project's direction and gave feedback on the design as it developed.
     </p>
     <p>
-      <strong>Time.</strong> We spent roughly 15 people-hours in total. The preprocessing took the most time.
-      CMIP6 is a very large dataset, so a lot of work went into exploring it to find the files we needed, making sure
-      all 7 models loaded correctly, and getting the full pipeline to run without errors. Once the data was ready, the
-      D3 side took the next most time. Getting the hover tooltip to work and keeping the lines, bands, and
-      labels in sync when scenarios are toggled on and off was a bit of a struggle.
+      <strong>Time.</strong> We spent roughly 15 people-hours in total. The preprocessing took the most time. CMIP6 is a
+      very large dataset, so a lot of work went into exploring it to find the files we needed, making sure all 7 models
+      loaded correctly, and getting the full pipeline to run without errors. Once the data was ready, the D3 side took
+      the next most time. Getting the hover tooltip to work and keeping the lines, bands, and labels in sync when
+      scenarios are toggled on and off was a bit of a struggle. Additionally, workshopping the details, evaluating
+      feedback, and polishing the final design also took a while.
     </p>
   </section>
 
